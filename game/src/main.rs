@@ -1,8 +1,8 @@
+mod character;
 mod goal;
 mod item;
 mod map;
 mod menus;
-mod mob;
 mod render;
 mod world;
 
