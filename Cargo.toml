@@ -1,0 +1,20 @@
+[workspace]
+resolver = "2"
+default-members=["game"]
+members = [
+    "better-std",
+    "game",
+]
+
+[workspace.package]
+homepage = "https://blog.mimir.systems"
+repository = "https://github.com/cypher1/keeps_and_kobolds"
+
+[profile.test]
+opt-level = 3
+
+[profile.release]
+debug = true
+
+[workspace.dependencies]
+pretty_assertions = "1.4.1"

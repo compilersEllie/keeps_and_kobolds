@@ -1,0 +1,21 @@
+[package]
+name = "keeps_and_cobolds"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.104"
+better-std = { path = "../better-std", features = [ ] }
+crossterm = "0.29.0"
+directories = "6.0.0"
+inventory = "0.3.24"
+log = "0.4"
+pretty_assertions.workspace = true
+protest = "1.1.0"
+ratatui = "0.30.2"
+redb = "4.2.0"
+serde = "1.0.229"
+serde_json = "1.0.151"
+tokio = "1.53.1"
+tokio-stream = "0.1.19"
+tui-markdown = "0.3.9"
