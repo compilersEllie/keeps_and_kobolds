@@ -8,14 +8,16 @@ anyhow = "1.0.104"
 better-std = { path = "../better-std", features = [ ] }
 crossterm = "0.29.0"
 directories = "6.0.0"
+include_directory = { version = "0.1.1", features = ["glob"] }
 inventory = "0.3.24"
 log = "0.4"
 pretty_assertions.workspace = true
 protest = "1.1.0"
 ratatui = "0.30.2"
 redb = "4.2.0"
-serde = "1.0.229"
-serde_json = "1.0.151"
+serde = { version = "1.0", features = ["derive"] }
+simple-datetime-rs = { version = "0.3.0", features = ["serde"] }
 tokio = "1.53.1"
 tokio-stream = "0.1.19"
+toml = "1.1.4"
 tui-markdown = "0.3.9"

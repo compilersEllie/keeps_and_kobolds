@@ -1,1 +1,209 @@
-// TODO: Implement character
+use serde::{Deserialize, Serialize};
+use std::ops::{Add, AddAssign, Mul, MulAssign};
+
+use crate::actions::{Action, Discussion};
+use crate::effects::{Condition, Effect, StoryPoint};
+use crate::item::{Item, Slot};
+use crate::map::Location;
+use crate::typed_id::Id;
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum Rarity {
+    Common,
+    Uncommon,
+    Rare,
+    Unique, // Never randomly generated
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Ancestry {
+    // TODO: Add more ancestries.
+    // TODO: Register from files.
+    name: String,
+    stats: Stats,
+    rarity: Rarity,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Background {
+    // TODO: Add more backgrounds.
+    // TODO: Register from files.
+    name: String,
+    stats: Stats,
+    rarity: Rarity,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Class {
+    // TODO: Add more classes.
+    // TODO: Register from files.
+    name: String,
+    stats: Stats,
+    rarity: Rarity,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum Target {
+    AnyLiving,
+    AnyOtherSpecies,
+    AnyOtherBackground,
+    AnyWeaker,
+    Character,
+    Player,
+    OtherCharacter(Id<Character>),
+    Item(Id<Item>),
+    Location(Id<Location>),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Goal {
+    target: Target,
+    action: Action,
+    condition: Option<Condition>,
+}
+
+#[derive(Default, Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Stats {
+    pub strength: u32,
+    pub wisdom: u32,
+    pub constitution: u32,
+    pub dexterity: u32,
+    pub intelligence: u32,
+    pub charisma: u32,
+    pub mana: u32,
+    pub health: u32,
+    pub experience_points: u32,
+    pub experience_rate: u32,
+    pub mass: u32,
+    pub weightlessness: u32,
+
+    pub slots: Vec<Slot>,
+    pub equipped: Vec<(Slot, Item)>,
+    pub actions: Vec<Action>,
+    pub effects: Vec<Effect>,
+    pub aliases: Vec<String>,
+    pub traits: Vec<String>,
+    pub goals: Vec<Goal>,
+}
+
+impl AddAssign for Stats {
+    fn add_assign(&mut self, other: Self) {
+        self.strength += other.strength;
+        self.wisdom += other.wisdom;
+        self.constitution += other.constitution;
+        self.dexterity += other.dexterity;
+        self.intelligence += other.intelligence;
+        self.charisma += other.charisma;
+        self.mana += other.mana;
+        self.health += other.health;
+        self.experience_points += other.experience_points;
+        self.experience_rate += other.experience_rate;
+        self.mass += other.mass;
+        self.weightlessness += other.weightlessness;
+
+        self.slots.extend(other.slots);
+        self.equipped.extend(other.equipped);
+        self.actions.extend(other.actions);
+        self.effects.extend(other.effects);
+        self.aliases.extend(other.aliases);
+        self.traits.extend(other.traits);
+        self.goals.extend(other.goals);
+    }
+}
+
+impl MulAssign for Stats {
+    fn mul_assign(&mut self, other: Stats) {
+        self.strength += other.strength;
+        self.wisdom += other.wisdom;
+        self.constitution += other.constitution;
+        self.dexterity += other.dexterity;
+        self.intelligence += other.intelligence;
+        self.charisma += other.charisma;
+        self.mana += other.mana;
+        self.health += other.health;
+        self.experience_points += other.experience_points;
+        self.experience_rate += other.experience_rate;
+        self.mass += other.mass;
+        self.weightlessness += other.weightlessness;
+
+        assert!(other.slots.is_empty());
+        assert!(other.equipped.is_empty());
+        assert!(other.actions.is_empty());
+        assert!(other.effects.is_empty());
+        assert!(other.aliases.is_empty());
+        assert!(other.traits.is_empty());
+        assert!(other.goals.is_empty());
+    }
+}
+
+impl Add for Stats {
+    type Output = Self;
+
+    fn add(self, other: Stats) -> Stats {
+        let mut res = self.clone();
+        res += other;
+        res
+    }
+}
+
+impl Mul for Stats {
+    type Output = Self;
+
+    fn mul(self, other: Stats) -> Stats {
+        let mut res = self.clone();
+        res *= other;
+        res
+    }
+}
+
+impl Stats {
+    fn new() -> Stats {
+        Stats::default()
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Character {
+    // TODO: Implement character
+    name: String, // Primary
+    ancestry: Ancestry,
+    background: Background,
+    class: Class,
+
+    // Story changes, NPC & AFK
+    history: Vec<StoryPoint>,
+    lines: Discussion,
+
+    // Cached
+    stats: Option<Stats>,
+}
+
+impl Character {
+    fn compute(&mut self) -> Stats {
+        if let Some(stats) = &self.stats {
+            return stats.clone();
+        }
+        let mut stats = Stats::new();
+        stats += self.ancestry.stats.clone();
+        stats += self.background.stats.clone();
+        stats += self.class.stats.clone();
+
+        for storypoint in &self.history {
+            storypoint.effect.apply(&mut stats, None);
+        }
+
+        for (slot, item) in &stats.equipped.clone() {
+            for storypoint in &item.history {
+                storypoint.effect.apply(&mut stats, Some(&slot));
+            }
+        }
+        self.stats = Some(stats.clone());
+        stats
+    }
+
+    // TODO: Calculate get situational actions
+    // TODO: Movement modes
+    // TODO: Stat tests
+    // TODO: Character creator
+    // TODO: Vision stat
+}
