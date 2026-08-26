@@ -1,11 +1,14 @@
 use serde::{Deserialize, Serialize};
-use std::ops::{Add, AddAssign, Mul, MulAssign};
+use std::ops::{Add, AddAssign};
 
 use crate::actions::{Action, Discussion};
 use crate::effects::{Condition, Effect, StoryPoint};
 use crate::item::{Item, Slot};
 use crate::map::Location;
 use crate::typed_id::Id;
+
+type Centimetres = u32;
+type Years = u32;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Rarity {
@@ -22,6 +25,7 @@ pub struct Ancestry {
     name: String,
     stats: Stats,
     rarity: Rarity,
+    nonplayable: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -77,6 +81,13 @@ pub struct Stats {
     pub mass: u32,
     pub weightlessness: u32,
 
+    pub min_height: Option<Centimetres>,
+    pub height: Centimetres,
+    pub max_height: Option<Centimetres>,
+    pub age: Years,
+    pub max_age: Option<Years>,
+    pub life_extension: Years,
+
     pub slots: Vec<Slot>,
     pub equipped: Vec<(Slot, Item)>,
     pub actions: Vec<Action>,
@@ -88,6 +99,7 @@ pub struct Stats {
 
 impl AddAssign for Stats {
     fn add_assign(&mut self, other: Self) {
+        // Basic stats
         self.strength += other.strength;
         self.wisdom += other.wisdom;
         self.constitution += other.constitution;
@@ -100,7 +112,10 @@ impl AddAssign for Stats {
         self.experience_rate += other.experience_rate;
         self.mass += other.mass;
         self.weightlessness += other.weightlessness;
+        self.height += other.height;
+        self.age += other.age;
 
+        // Collections
         self.slots.extend(other.slots);
         self.equipped.extend(other.equipped);
         self.actions.extend(other.actions);
@@ -108,31 +123,16 @@ impl AddAssign for Stats {
         self.aliases.extend(other.aliases);
         self.traits.extend(other.traits);
         self.goals.extend(other.goals);
-    }
-}
 
-impl MulAssign for Stats {
-    fn mul_assign(&mut self, other: Stats) {
-        self.strength += other.strength;
-        self.wisdom += other.wisdom;
-        self.constitution += other.constitution;
-        self.dexterity += other.dexterity;
-        self.intelligence += other.intelligence;
-        self.charisma += other.charisma;
-        self.mana += other.mana;
-        self.health += other.health;
-        self.experience_points += other.experience_points;
-        self.experience_rate += other.experience_rate;
-        self.mass += other.mass;
-        self.weightlessness += other.weightlessness;
+        // Limits
+        self.min_height = self.min_height.iter().chain(&other.min_height).max();
+        self.max_height = self.max_height.iter().chain(&other.max_height).mix();
+        self.max_age = self.max_age.iter().chain(&other.max_age).min();
 
-        assert!(other.slots.is_empty());
-        assert!(other.equipped.is_empty());
-        assert!(other.actions.is_empty());
-        assert!(other.effects.is_empty());
-        assert!(other.aliases.is_empty());
-        assert!(other.traits.is_empty());
-        assert!(other.goals.is_empty());
+        // Specials
+        self.max_age += self.life_extension;
+        self.life_extension = 0;
+        self.max_age += other.life_extension;
     }
 }
 
@@ -142,16 +142,6 @@ impl Add for Stats {
     fn add(self, other: Stats) -> Stats {
         let mut res = self.clone();
         res += other;
-        res
-    }
-}
-
-impl Mul for Stats {
-    type Output = Self;
-
-    fn mul(self, other: Stats) -> Stats {
-        let mut res = self.clone();
-        res *= other;
         res
     }
 }
