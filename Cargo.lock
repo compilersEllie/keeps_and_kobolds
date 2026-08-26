@@ -787,7 +787,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "keeps_and_cobolds"
+name = "keeps_and_kobolds"
 version = "0.1.0"
 dependencies = [
  "anyhow",
