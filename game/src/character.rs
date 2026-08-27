@@ -205,7 +205,7 @@ impl Character {
 
         for (slot, item) in &stats.equipped.clone() {
             for storypoint in &item.history {
-                storypoint.effect.apply(&mut stats, Some(&slot));
+                storypoint.effect.apply(&mut stats, Some(slot));
             }
         }
         self.stats = Some(stats.clone());

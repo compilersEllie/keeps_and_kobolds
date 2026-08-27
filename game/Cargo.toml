@@ -8,6 +8,7 @@ anyhow = "1.0.104"
 better-std = { path = "../better-std", features = [ ] }
 crokey = { version = "1.5.0", features = ["serde"] }
 crossterm = { version = "0.29.0", features = ["serde"] }
+derive_more = { version = "2.1.1", features = ["full"] }
 directories = "6.0.0"
 include_directory = { version = "0.1.1", features = ["glob"] }
 inventory = "0.3.24"

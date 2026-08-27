@@ -45,7 +45,7 @@ pub enum Condition {
 
 impl Condition {
     pub fn met(&self, stats: &Stats, slot: Option<&Slot>) -> bool {
-        todo!()
+        todo!("Condition.met")
     }
 }
 
@@ -76,14 +76,14 @@ pub enum CurrentEffect {
 impl CurrentEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
         match self {
-            _ => todo!(),
+            _ => todo!("CurrentEffect.apply"),
         }
     }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum TimedEffect {
-    Current(CurrentEffect),
+    Current(Box<CurrentEffect>),
     Temporary {
         seconds: u32,
         effect: Box<CurrentEffect>,
@@ -97,7 +97,7 @@ pub enum TimedEffect {
 impl TimedEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
         match self {
-            _ => todo!(),
+            _ => todo!("TimedEffect.apply"),
         }
     }
 }
@@ -109,7 +109,7 @@ pub enum Effect {
     Multiple(Vec<Effect>),
     If {
         condition_name: Option<String>,
-        condition: Condition,
+        condition: Box<Condition>,
         effect: Box<Effect>,
         failed_effect: Box<Effect>,
     },
@@ -158,7 +158,7 @@ pub struct Relationship {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum StoryPointInfo {
     Location(Id<Location>),
-    Relationship(Relationship, Id<Character>),
+    Relationship(Id<Relationship>, Id<Character>),
     Effect(Id<Character>, Box<CurrentEffect>),
     Loss(Box<StoryPoint>),
     Job(String),
