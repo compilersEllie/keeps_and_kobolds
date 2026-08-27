@@ -1,11 +1,21 @@
 use crate::character::Character;
+use crate::character::Rarity;
 use crate::character::{Ancestry, Background, Class, Stats};
 use crate::item::Item;
 use crate::item::Slot;
-use crate::map::{Color, Location};
+use crate::map::{Color, Location, Pos, Vec2D};
 use crate::typed_id::Id;
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Movement {
+    name: String,
+    velocity: Vec2D,
+    // TODO: Acceleration?
+    // TODO: Rotation?
+    // TODO: Animation?
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Condition {
@@ -56,8 +66,9 @@ pub enum CurrentEffect {
     SummonItem(Id<Item>),
     SpawnA(Id<Character>),
     SummonThe(Id<Character>),
+    Move(Id<Movement>),
     TeleportTo(Id<Character>),
-    TeleportInto(Id<Location>),
+    TeleportInto(Id<Location>, Pos),
     Buff(String, Stats),
     DeBuff(String, Stats), // Takes away if has.
 }
@@ -133,12 +144,21 @@ impl Effect {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Relationship {
+    name: String,
+    familial: bool,
+    work: bool,
+    superior: bool,
+    subordinate: bool,
+    ancestry: Option<Ancestry>,
+    class: Option<Class>,
+    rarity: Rarity,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum StoryPointInfo {
-    From(Id<Location>),
-    Mentor(Id<Character>),
-    Student(Id<Character>),
-    Pet(Id<Character>),
-    Family(String, Id<Character>),
+    Location(Id<Location>),
+    Relationship(Relationship, Id<Character>),
     Effect(Id<Character>, Box<CurrentEffect>),
     Loss(Box<StoryPoint>),
     Job(String),

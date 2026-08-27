@@ -1,3 +1,5 @@
+use crossterm::event::MouseEventKind;
+use crokey::KeyCombination;
 use serde::{Deserialize, Serialize};
 
 use crate::effects::{Condition, Effect};
@@ -21,7 +23,7 @@ pub enum UseAs {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum Action {
+pub enum ActionKind {
     If(Condition, Label),
     Effect(Effect), // Steal, Give, Buff, Debuff, Give goals etc
 
@@ -41,6 +43,14 @@ pub enum Action {
     Discussion(Id<Discussion>),
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Action {
+    pub name: String,
+    pub kind: ActionKind,
+    pub default_bind: Vec<KeyCombination>,
+    pub default_mouse: Vec<MouseEventKind>,
+}
+
 type Label = String;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -49,5 +59,5 @@ pub struct Discussion {
     // TODO: Implement internationalisation
     pub starts: Vec<Label>,
     pub current: Option<usize>,
-    lines: Vec<Action>,
+    pub lines: Vec<Action>,
 }

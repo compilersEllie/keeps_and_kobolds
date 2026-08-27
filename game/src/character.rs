@@ -15,7 +15,8 @@ pub enum Rarity {
     Common,
     Uncommon,
     Rare,
-    Unique, // Never randomly generated
+    OnePerGroup, // e.g. King, Queen, Boss, Lich
+    Unique,      // Never randomly generated
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -77,9 +78,11 @@ pub struct Stats {
     pub mana: u32,
     pub health: u32,
     pub experience_points: u32,
-    pub experience_rate: u32,
     pub mass: u32,
-    pub weightlessness: u32,
+
+    pub gravity_percent: u32,
+    pub experience_rate_percent: u32,
+    pub weight: u32,
 
     pub min_height: Option<Centimetres>,
     pub height: Centimetres,
@@ -108,12 +111,12 @@ impl AddAssign for Stats {
         self.charisma += other.charisma;
         self.mana += other.mana;
         self.health += other.health;
-        self.experience_points += other.experience_points;
-        self.experience_rate += other.experience_rate;
         self.mass += other.mass;
-        self.weightlessness += other.weightlessness;
         self.height += other.height;
         self.age += other.age;
+        // Multiplicative
+        self.experience_rate_percent += other.experience_rate_percent;
+        self.gravity_percent += other.gravity_percent;
 
         // Collections
         self.slots.extend(other.slots);
@@ -125,14 +128,32 @@ impl AddAssign for Stats {
         self.goals.extend(other.goals);
 
         // Limits
-        self.min_height = self.min_height.iter().chain(&other.min_height).max();
-        self.max_height = self.max_height.iter().chain(&other.max_height).mix();
-        self.max_age = self.max_age.iter().chain(&other.max_age).min();
+        self.min_height = self
+            .min_height
+            .iter()
+            .chain(&other.min_height)
+            .max()
+            .copied();
+        self.max_height = self
+            .max_height
+            .iter()
+            .chain(&other.max_height)
+            .min()
+            .copied();
+        self.max_age = self.max_age.iter().chain(&other.max_age).min().copied();
 
         // Specials
-        self.max_age += self.life_extension;
-        self.life_extension = 0;
-        self.max_age += other.life_extension;
+        self.weight = ((self.weight as f32) * (other.gravity_percent as f32) / 100.0) as u32;
+        self.experience_points += ((self.experience_rate_percent as f32)
+            * (other.experience_points as f32)
+            / 100.0) as u32;
+        if let Some(max_age) = &mut self.max_age {
+            *max_age += self.life_extension;
+            *max_age += other.life_extension;
+            self.life_extension = 0;
+        } else {
+            self.life_extension += other.life_extension;
+        }
     }
 }
 
