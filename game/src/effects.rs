@@ -1,11 +1,21 @@
 use crate::character::Character;
+use crate::character::Rarity;
 use crate::character::{Ancestry, Background, Class, Stats};
 use crate::item::Item;
 use crate::item::Slot;
-use crate::map::{Color, Location};
+use crate::map::{Color, Location, Pos, Vec2D};
 use crate::typed_id::Id;
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Movement {
+    name: String,
+    velocity: Vec2D,
+    // TODO: Acceleration?
+    // TODO: Rotation?
+    // TODO: Animation?
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Condition {
@@ -35,7 +45,7 @@ pub enum Condition {
 
 impl Condition {
     pub fn met(&self, stats: &Stats, slot: Option<&Slot>) -> bool {
-        todo!()
+        todo!("Condition.met")
     }
 }
 
@@ -56,23 +66,22 @@ pub enum CurrentEffect {
     SummonItem(Id<Item>),
     SpawnA(Id<Character>),
     SummonThe(Id<Character>),
+    Move(Id<Movement>),
     TeleportTo(Id<Character>),
-    TeleportInto(Id<Location>),
+    TeleportInto(Id<Location>, Pos),
     Buff(String, Stats),
     DeBuff(String, Stats), // Takes away if has.
 }
 
 impl CurrentEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
-        match self {
-            _ => todo!(),
-        }
+        todo!("CurrentEffect.apply")
     }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum TimedEffect {
-    Current(CurrentEffect),
+    Current(Box<CurrentEffect>),
     Temporary {
         seconds: u32,
         effect: Box<CurrentEffect>,
@@ -85,9 +94,7 @@ pub enum TimedEffect {
 
 impl TimedEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
-        match self {
-            _ => todo!(),
-        }
+        todo!("TimedEffect.apply")
     }
 }
 
@@ -98,7 +105,7 @@ pub enum Effect {
     Multiple(Vec<Effect>),
     If {
         condition_name: Option<String>,
-        condition: Condition,
+        condition: Box<Condition>,
         effect: Box<Effect>,
         failed_effect: Box<Effect>,
     },
@@ -133,12 +140,21 @@ impl Effect {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct Relationship {
+    name: String,
+    familial: bool,
+    work: bool,
+    superior: bool,
+    subordinate: bool,
+    ancestry: Option<Ancestry>,
+    class: Option<Class>,
+    rarity: Rarity,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum StoryPointInfo {
-    From(Id<Location>),
-    Mentor(Id<Character>),
-    Student(Id<Character>),
-    Pet(Id<Character>),
-    Family(String, Id<Character>),
+    Location(Id<Location>),
+    Relationship(Id<Relationship>, Id<Character>),
     Effect(Id<Character>, Box<CurrentEffect>),
     Loss(Box<StoryPoint>),
     Job(String),
