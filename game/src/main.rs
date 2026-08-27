@@ -51,3 +51,4 @@ fn main() {
 // TODO(feat): Setup multiplayer game sync
 // TODO(feat): Setup versioning for data and game and protocols
 // TODO(feat): Setup AI systems for characters (pathing, fighting)
+// TODO(feat): Setup auto releases with https://docs.cocogitto.io/ci_cd/action.html
