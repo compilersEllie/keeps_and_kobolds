@@ -75,9 +75,7 @@ pub enum CurrentEffect {
 
 impl CurrentEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
-        match self {
-            _ => todo!("CurrentEffect.apply"),
-        }
+        todo!("CurrentEffect.apply")
     }
 }
 
@@ -96,9 +94,7 @@ pub enum TimedEffect {
 
 impl TimedEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
-        match self {
-            _ => todo!("TimedEffect.apply"),
-        }
+        todo!("TimedEffect.apply")
     }
 }
 

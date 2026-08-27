@@ -1,3 +1,6 @@
+#![allow(unused_variables)] // TODO(cleanup): Remove
+#![allow(unused)] // TODO(cleanup): Remove
+
 mod actions;
 mod character;
 mod effects;
