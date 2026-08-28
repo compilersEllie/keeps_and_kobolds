@@ -7,11 +7,16 @@ use crate::item::{Item, Slot};
 use crate::map::Location;
 use crate::typed_id::Id;
 
+pub fn is_default<T: Default + PartialEq>(t: &T) -> bool {
+    *t == Default::default()
+}
+
 type Centimetres = u32;
 type Years = u32;
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Rarity {
+    #[default]
     Common,
     Uncommon,
     Rare,
@@ -25,7 +30,9 @@ pub struct Ancestry {
     // TODO: Register from files.
     name: String,
     stats: Stats,
+    #[serde(skip_serializing_if = "is_default")]
     rarity: Rarity,
+    #[serde(skip_serializing_if = "is_default")]
     nonplayable: bool,
 }
 
@@ -44,14 +51,18 @@ pub struct Class {
     // TODO: Register from files.
     name: String,
     stats: Stats,
+    #[serde(default)]
+    #[serde(skip_serializing_if = "is_default")]
     rarity: Rarity,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Target {
-    AnyLiving,
+    #[default]
+    AnyOtherSpeciesOrBackground,
     AnyOtherSpecies,
     AnyOtherBackground,
+    AnyLiving,
     AnyWeaker,
     Character,
     Player,
@@ -62,41 +73,69 @@ pub enum Target {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Goal {
+    #[serde(default)]
+    #[serde(skip_serializing_if = "is_default")]
     target: Target,
     action: Action,
+    #[serde(skip_serializing_if = "Option::is_none")]
     condition: Option<Condition>,
 }
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[serde(default)]
 pub struct Stats {
+    #[serde(skip_serializing_if = "is_default")]
     pub strength: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub wisdom: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub constitution: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub dexterity: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub intelligence: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub charisma: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub mana: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub health: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub experience_points: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub mass: u32,
 
+    #[serde(skip_serializing_if = "is_default")]
     pub gravity_percent: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub experience_rate_percent: u32,
+    #[serde(skip_serializing_if = "is_default")]
     pub weight: u32,
 
-    pub min_height: Option<Centimetres>,
+    #[serde(skip_serializing_if = "is_default")]
     pub height: Centimetres,
-    pub max_height: Option<Centimetres>,
+    #[serde(skip_serializing_if = "is_default")]
     pub age: Years,
-    pub max_age: Option<Years>,
+    #[serde(skip_serializing_if = "is_default")]
     pub life_extension: Years,
 
+    pub min_height: Option<Centimetres>,
+    pub max_height: Option<Centimetres>,
+    pub max_age: Option<Years>,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub slots: Vec<Slot>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub equipped: Vec<(Slot, Item)>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub actions: Vec<Action>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub effects: Vec<Effect>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub aliases: Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub traits: Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub goals: Vec<Goal>,
 }
 
@@ -183,9 +222,11 @@ pub struct Character {
 
     // Story changes, NPC & AFK
     history: Vec<StoryPoint>,
-    lines: Discussion,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    lines: Option<Discussion>,
 
     // Cached
+    #[serde(skip)]
     stats: Option<Stats>,
 }
 
