@@ -103,7 +103,11 @@ impl Ord for MouseCombination {
 pub struct Action {
     pub name: String,
     pub kind: ActionKind,
+    #[serde(default)]
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub default_bind: Vec<KeyCombination>,
+    #[serde(default)]
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub default_mouse: Vec<MouseCombination>,
 }
 
