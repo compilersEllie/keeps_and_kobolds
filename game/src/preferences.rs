@@ -23,14 +23,26 @@ impl Preferences {
 
     pub fn load() -> Result<Self> {
         let path = Preferences::prefs_file();
-        let content = read_to_string(path)?;
-        Ok(toml::from_str(&content)?)
+        let content = read_to_string(path);
+        match content {
+            Ok(content) => {
+                // TODO(io): Handle errors
+                Ok(toml::from_str(&content)?)
+            }
+            Err(err) => {
+                log::warn!("{}", err);
+                Ok(Preferences::default())
+            }
+        }
     }
 
     pub fn save(&self) -> Result<()> {
         let path = Preferences::prefs_file();
+        // TODO(io): Handle file create errors
         let mut prefs_file = File::create(path)?;
+        // TODO(io): Handle serialize errors
         let prefs = toml::to_string(self)?;
+        // TODO(io): Handle write errors
         Ok(prefs_file.write_all(prefs.as_bytes())?)
     }
 }
