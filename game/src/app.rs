@@ -35,7 +35,7 @@ pub struct App<B: Backend> {
 
 impl<B: Backend + Write> App<B>
 where
-    <B as Backend>::Error: 'static + Sync + Send
+    <B as Backend>::Error: 'static + Sync + Send,
 {
     pub fn new(terminal: Terminal<B>) -> Result<Self> {
         let preferences = Preferences::load()?;
