@@ -1,5 +1,6 @@
 #![allow(unused_variables)] // TODO(cleanup): Remove
 #![allow(unused)] // TODO(cleanup): Remove
+use directories::ProjectDirs;
 
 mod actions;
 mod character;
@@ -8,10 +9,20 @@ mod goal;
 mod item;
 mod map;
 mod menus;
+mod preferences;
 mod render;
 mod world;
 
 mod typed_id;
+
+pub static QUALIFIER: &str = "systems";
+pub static ORGANIZATION: &str = "mimir";
+pub static APPLICATION: &str = "knk";
+
+pub fn dirs() -> ProjectDirs {
+    ProjectDirs::from(QUALIFIER, ORGANIZATION, APPLICATION)
+        .expect("Couldn't find project directories")
+}
 
 fn main() {
     println!("Hello, world!");
@@ -48,7 +59,8 @@ fn main() {
 // TODO(feat): Setup player keybinds via toml
 // TODO(feat): Setup redb for save games with multiple save slots
 // TODO(feat): Setup multiplayer joining / friend codes and invites
-// TODO(feat): Setup multiplayer game sync
+// TODO(feat): Setup multiplayer game sync, use tokio-tungstenite websockets
 // TODO(feat): Setup versioning for data and game and protocols
 // TODO(feat): Setup AI systems for characters (pathing, fighting)
 // TODO(feat): Setup auto releases with https://docs.cocogitto.io/ci_cd/action.html
+// TODO(perf): Use https://github.com/lumol-org/soa-derive and rayon for faster arrays
