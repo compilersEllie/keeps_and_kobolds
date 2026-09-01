@@ -67,3 +67,10 @@ pub struct Map {
     pub items: Vec<(Pos, Id<Item>)>,
     pub character: Vec<(Pos, Id<Character>)>,
 }
+
+// TODO(feat): Map generation via continuous noise functiond
+// e.g. https://docs.isaratech.com/ue4-plugins/noise-library/generators/ridged-multi
+//      Height map - Octave count = 12
+//      Maybe Water ways - Spectral weights exponent = 2
+// TODO(feat): Use erosion modeling https://stackoverflow.com/questions/36796829/procedural-terrain-with-ridged-fractal-noise
+// More inspiration https://www.world-machine.com/features.php#feature-simulation
