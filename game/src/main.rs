@@ -122,3 +122,4 @@ async fn main() -> Result<()> {
 // TODO(feat): Setup AI systems for characters (pathing, fighting)
 // TODO(feat): Setup auto releases with https://docs.cocogitto.io/ci_cd/action.html
 // TODO(perf): Use https://github.com/lumol-org/soa-derive and rayon for faster arrays
+// TODO(feat): Use a free relay server for p2p https://www.metered.ca/tools/openrelay/ or https://localxpose.io/tunneling-service
