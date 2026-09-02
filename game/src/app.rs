@@ -110,6 +110,7 @@ where
                     self.enter().await?;
                 }
             }
+            crate::world::wmain()?;
             // TODO(feat): Handle simulation on another thread
             // TODO(feat): Handle messages on another thread
             // TODO(feat): Handle rendering on another thread

@@ -15,6 +15,7 @@ mod menus;
 mod preferences;
 mod render;
 mod world;
+mod net;
 
 mod typed_id;
 
@@ -91,9 +92,14 @@ async fn main() -> Result<()> {
     let terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
     let mut app = App::new(terminal)?;
 
+    // let gameNet = GameNet::new();
+    net::main().await?;
+
+    /*
     app.enter().await?;
     app.run().await?;
     app.leave().await?;
+    */
 
     Ok(())
 }
@@ -122,3 +128,4 @@ async fn main() -> Result<()> {
 // TODO(feat): Setup AI systems for characters (pathing, fighting)
 // TODO(feat): Setup auto releases with https://docs.cocogitto.io/ci_cd/action.html
 // TODO(perf): Use https://github.com/lumol-org/soa-derive and rayon for faster arrays
+// TODO(feat): Use a free relay server for p2p https://www.metered.ca/tools/openrelay/ or https://localxpose.io/tunneling-service
