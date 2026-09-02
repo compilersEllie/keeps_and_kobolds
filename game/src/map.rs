@@ -74,4 +74,3 @@ pub struct Map {
 //      Maybe Water ways - Spectral weights exponent = 2
 // TODO(feat): Use erosion modeling https://stackoverflow.com/questions/36796829/procedural-terrain-with-ridged-fractal-noise
 // More inspiration https://www.world-machine.com/features.php#feature-simulation
-

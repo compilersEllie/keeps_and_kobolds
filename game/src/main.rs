@@ -12,10 +12,10 @@ mod goal;
 mod item;
 mod map;
 mod menus;
+mod net;
 mod preferences;
 mod render;
 mod world;
-mod net;
 
 mod typed_id;
 

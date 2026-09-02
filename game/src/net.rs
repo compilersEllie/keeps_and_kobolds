@@ -2,7 +2,7 @@ use std::{error::Error, time::Duration};
 
 use anyhow::Result;
 use futures::prelude::*;
-use libp2p::{noise, ping, swarm::SwarmEvent, tcp, yamux, Multiaddr};
+use libp2p::{Multiaddr, noise, ping, swarm::SwarmEvent, tcp, yamux};
 use tracing_subscriber::EnvFilter;
 
 pub async fn main() -> Result<()> {
@@ -18,9 +18,7 @@ pub async fn main() -> Result<()> {
             yamux::Config::default,
         )?
         .with_behaviour(|_| ping::Behaviour::default())?
-        .with_swarm_config(|cfg| {
-            cfg.with_idle_connection_timeout(Duration::from_secs(u64::MAX))
-        }) // Allows us to observe pings indefinitely.
+        .with_swarm_config(|cfg| cfg.with_idle_connection_timeout(Duration::from_secs(u64::MAX))) // Allows us to observe pings indefinitely.
         .build();
 
     // Tell the swarm to listen on all interfaces and a random, OS-assigned
