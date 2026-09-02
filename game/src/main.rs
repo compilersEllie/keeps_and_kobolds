@@ -15,6 +15,7 @@ mod menus;
 mod preferences;
 mod render;
 mod world;
+mod net;
 
 mod typed_id;
 
@@ -91,9 +92,14 @@ async fn main() -> Result<()> {
     let terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
     let mut app = App::new(terminal)?;
 
+    // let gameNet = GameNet::new();
+    net::main().await?;
+
+    /*
     app.enter().await?;
     app.run().await?;
     app.leave().await?;
+    */
 
     Ok(())
 }
