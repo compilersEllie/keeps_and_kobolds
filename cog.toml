@@ -32,7 +32,7 @@ remote = "github.com"
 repository = "cocogitto_bot_playground"
 owner = "cocogitto"
 authors = [
-  { username = "cypher1", signature = "Eleanor Pratt"}
+  { username = "compilersEllie", signature = "Eleanor Pratt"}
 ]
 
 [bump_profiles]
