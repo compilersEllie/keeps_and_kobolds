@@ -8,7 +8,7 @@ members = [
 
 [workspace.package]
 homepage = "https://blog.mimir.systems"
-repository = "https://github.com/cypher1/keeps_and_kobolds"
+repository = "https://github.com/compilersEllie/keeps_and_kobolds"
 
 [profile.test]
 opt-level = 3
