@@ -2,8 +2,23 @@ use std::{error::Error, time::Duration};
 
 use anyhow::Result;
 use futures::prelude::*;
-use libp2p::{Multiaddr, noise, ping, swarm::SwarmEvent, tcp, yamux};
+use libp2p::swarm::NetworkBehaviour;
+use libp2p::{
+    Multiaddr, identify, kad,
+    kad::{Mode, store::MemoryStore},
+    mdns, noise, ping,
+    swarm::SwarmEvent,
+    tcp, yamux,
+};
 use tracing_subscriber::EnvFilter;
+
+#[derive(NetworkBehaviour)]
+struct GameNet {
+    mdns: mdns::tokio::Behaviour,  // Discover local peers
+    identify: identify::Behaviour, // Allows peer identity
+    // gossipsub: gossipsub::Behaviour, // Publish info across the network
+    kad: kad::Behaviour<MemoryStore>, // Store info on the network
+}
 
 pub async fn main() -> Result<()> {
     let _ = tracing_subscriber::fmt()
@@ -16,8 +31,23 @@ pub async fn main() -> Result<()> {
             tcp::Config::default(),
             noise::Config::new,
             yamux::Config::default,
-        )?
-        .with_behaviour(|_| ping::Behaviour::default())?
+        )?;
+    let mut swarm = swarm
+        .with_behaviour(|key| {
+            let mdns =
+                mdns::tokio::Behaviour::new(mdns::Config::default(), key.public().to_peer_id())?;
+            let identify =
+                identify::Behaviour::new(identify::Config::new("0.0.1".to_string(), key.public()));
+            let kad = kad::Behaviour::new(
+                key.public().to_peer_id(),
+                MemoryStore::new(key.public().to_peer_id()),
+            );
+            Ok(GameNet {
+                mdns,
+                identify,
+                kad,
+            })
+        })?
         .with_swarm_config(|cfg| cfg.with_idle_connection_timeout(Duration::from_secs(u64::MAX))) // Allows us to observe pings indefinitely.
         .build();
 
