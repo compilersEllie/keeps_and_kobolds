@@ -73,7 +73,7 @@ pub struct Map {
 
 asset!(Map);
 
-// TODO(feat): Map generation via continuous noise functiond #3
+// TODO(feat): Map generation via continuous noise functions #3
 // e.g. https://docs.isaratech.com/ue4-plugins/noise-library/generators/ridged-multi
 //      Height map - Octave count = 12
 //      Maybe Water ways - Spectral weights exponent = 2
