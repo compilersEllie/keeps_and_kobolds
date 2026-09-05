@@ -32,7 +32,7 @@ jobs:
     - name: Build
       run: cargo build --locked --release --verbose
     - name: Upload executable Linux
-      if: runner.os == 'Linux'
+      if: false && runner.os == 'Linux'
       uses: actions/upload-artifact@v7
       with:
         name: rust
@@ -41,7 +41,7 @@ jobs:
         archive: true
         if-no-files-found: error
     - name: Upload executable Windows
-      if: runner.os == 'Windows'
+      if: false && runner.os == 'Windows'
       uses: actions/upload-artifact@v7
       with:
         name: rust.exe
