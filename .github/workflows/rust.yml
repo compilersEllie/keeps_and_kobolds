@@ -14,8 +14,8 @@ jobs:
         os: [ubuntu-latest] #, windows-latest]
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/cache@v3
+    - uses: actions/checkout@v6
+    - uses: actions/cache@v5
       with:
         path: |
           /home/runner/.cargo/
@@ -33,16 +33,22 @@ jobs:
       run: cargo build --locked --release --verbose
     - name: Upload executable Linux
       if: runner.os == 'Linux'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: rust
         path: ./target/release/*
+        overwrite: true
+        archive: true
+        if-no-files-found: error
     - name: Upload executable Windows
       if: runner.os == 'Windows'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: rust.exe
         path: ./target/release/*.exe
+        overwrite: true
+        archive: true
+        if-no-files-found: error
     - name: Install clippy
       run: rustup component add clippy
     - name: Clippy
