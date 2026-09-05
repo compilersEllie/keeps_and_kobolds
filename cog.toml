@@ -33,8 +33,8 @@ post_package_bump_hooks = []
 path = "CHANGELOG.md"
 template = "remote"
 remote = "github.com"
-repository = "cocogitto_bot_playground"
-owner = "cocogitto"
+repository = "keeps_and_kobolds"
+owner = "compilersEllie"
 authors = [
   { username = "compilersEllie", signature = "Eleanor Pratt"}
 ]
