@@ -11,11 +11,15 @@ skip_ci = "[skip ci]"
 skip_untracked = false
 
 pre_bump_hooks = [
-    "echo {{version}}",
+    "cargo build --release",
+    "echo 'bumping from {{latest|0.0.0}} to {{version|0.0.1}}'",
 ]
 post_bump_hooks = [
+    "git add CHANGELOG.md",
+    "cargo workspaces version --allow-branch main custom {{version|0.0.1}}",
     "git push",
     "git push origin {{version}}",
+    # "cargo publish",
 ]
 
 pre_package_bump_hooks = []
