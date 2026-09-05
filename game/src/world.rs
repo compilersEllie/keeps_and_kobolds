@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use redb::{Database, MultimapTableDefinition, ReadableDatabase, ReadableTable, TableDefinition};
 
-// TODO: Implement world
+// TODO(feat): Implement world #2
 
 /// A Ratatui example that demonstrates how to draw on a canvas.
 ///

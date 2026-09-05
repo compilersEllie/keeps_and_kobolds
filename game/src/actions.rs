@@ -115,8 +115,8 @@ type Label = String;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Discussion {
-    // TODO: Implement discussion
-    // TODO: Implement internationalisation
+    // TODO(feat): Implement discussion #3
+    // TODO(feat): Implement internationalisation #5
     pub starts: Vec<Label>,
     pub current: Option<usize>,
     pub lines: Vec<Action>,

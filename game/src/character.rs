@@ -26,8 +26,8 @@ pub enum Rarity {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Ancestry {
-    // TODO: Add more ancestries.
-    // TODO: Register from files.
+    // TODO: Add more ancestries. #4
+    // TODO: Register from files. #2
     name: String,
     stats: Stats,
     #[serde(skip_serializing_if = "is_default")]
@@ -38,8 +38,8 @@ pub struct Ancestry {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Background {
-    // TODO: Add more backgrounds.
-    // TODO: Register from files.
+    // TODO: Add more backgrounds. #3
+    // TODO: Register from files. #2
     name: String,
     stats: Stats,
     rarity: Rarity,
@@ -47,8 +47,8 @@ pub struct Background {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Class {
-    // TODO: Add more classes.
-    // TODO: Register from files.
+    // TODO: Add more classes. #2
+    // TODO: Register from files. #2
     name: String,
     stats: Stats,
     #[serde(default)]
@@ -214,7 +214,7 @@ impl Stats {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Character {
-    // TODO: Implement character
+    // TODO: Implement character #2
     name: String, // Primary
     ancestry: Ancestry,
     background: Background,
@@ -253,9 +253,9 @@ impl Character {
         stats
     }
 
-    // TODO: Calculate get situational actions
-    // TODO: Movement modes
-    // TODO: Stat tests
-    // TODO: Character creator
-    // TODO: Vision stat
+    // TODO: Calculate get situational actions #2
+    // TODO: Movement modes #2
+    // TODO: Stat tests #3
+    // TODO: Character creator #3
+    // TODO: Vision stat #2
 }

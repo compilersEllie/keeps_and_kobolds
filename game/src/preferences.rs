@@ -8,10 +8,10 @@ use std::path::PathBuf;
 #[derive(Default, Debug, Serialize, Deserialize, Clone)]
 #[serde(default)]
 pub struct Preferences {
-    // TODO(feat): Support keybindings
-    // TODO(feat): Support Language
-    // TODO(feat): Support save files?
-    // TODO(feat): Save player name?
+    // TODO(feat): Support keybindings #3
+    // TODO(feat): Support Language #4
+    // TODO(feat): Support save files? #2
+    // TODO(feat): Save player name? #2
 }
 
 impl Preferences {
@@ -26,7 +26,7 @@ impl Preferences {
         let content = read_to_string(path);
         match content {
             Ok(content) => {
-                // TODO(io): Handle errors
+                // TODO(io): Handle errors #2
                 Ok(toml::from_str(&content)?)
             }
             Err(err) => {
@@ -38,11 +38,11 @@ impl Preferences {
 
     pub fn save(&self) -> Result<()> {
         let path = Preferences::prefs_file();
-        // TODO(io): Handle file create errors
+        // TODO(io): Handle file create errors #2
         let mut prefs_file = File::create(path)?;
-        // TODO(io): Handle serialize errors
+        // TODO(io): Handle serialize errors #2
         let prefs = toml::to_string(self)?;
-        // TODO(io): Handle write errors
+        // TODO(io): Handle write errors #2
         Ok(prefs_file.write_all(prefs.as_bytes())?)
     }
 }

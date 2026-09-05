@@ -12,9 +12,9 @@ use std::time::Duration;
 pub struct Movement {
     name: String,
     velocity: Vec2D,
-    // TODO: Acceleration?
-    // TODO: Rotation?
-    // TODO: Animation?
+    // TODO: Acceleration? #4
+    // TODO: Rotation? #4
+    // TODO: Animation? #3
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -45,7 +45,7 @@ pub enum Condition {
 
 impl Condition {
     pub fn met(&self, stats: &Stats, slot: Option<&Slot>) -> bool {
-        todo!("Condition.met")
+        todo!("Condition.met") // #2
     }
 }
 
@@ -75,7 +75,7 @@ pub enum CurrentEffect {
 
 impl CurrentEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
-        todo!("CurrentEffect.apply")
+        todo!("CurrentEffect.apply") // #2
     }
 }
 
@@ -94,7 +94,7 @@ pub enum TimedEffect {
 
 impl TimedEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
-        todo!("TimedEffect.apply")
+        todo!("TimedEffect.apply") // #2
     }
 }
 

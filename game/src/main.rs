@@ -1,5 +1,5 @@
-#![allow(unused_variables)] // TODO(cleanup): Remove
-#![allow(unused)] // TODO(cleanup): Remove
+#![allow(unused_variables)] // TODO(cleanup): Remove #5
+#![allow(unused)] // TODO(cleanup): Remove #5
 use anyhow::Result;
 use directories::ProjectDirs;
 use ratatui::{Terminal, backend::CrosstermBackend};
@@ -69,7 +69,7 @@ pub fn ensure_initialized() {
 pub fn ensure_initialized() {
     use std::fs::OpenOptions;
     build_logger(|env| {
-        // TODO(fix): Use ProjectDirs for log dir
+        // TODO(fix): Use ProjectDirs for log dir #3
         let log_file = OpenOptions::new()
             .append(true)
             .create(true)
@@ -104,28 +104,29 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-// TODO(feat): Use include_directories and directories to setup data
-// TODO(feat): Use protest for testing
-// TODO(feat): Setup ratatatui
-// TODO(feat): Setup crossterm and crokey key handling
-// TODO(feat): Setup log & pretty log
-// TODO(feat): Setup dialogues with tui-markdown
-// TODO(feat): Create descriptions from item stats
-// TODO(feat): Create descriptions from story points
-// TODO(feat): Support for mounts
-// TODO(feat): Support for pets (on body, roving)
-// TODO(feat): Support for parties (NPC ane multipkayer?
-// TODO(feat): Design a fighting system
-// TODO(feat): Design an action system
-// TODO(feat): Design a settings menu
-// TODO(feat): Design a main menu
-// TODO(feat): Design a pause menu?
-// TODO(feat): Setup player keybinds via toml
-// TODO(feat): Setup redb for save games with multiple save slots
-// TODO(feat): Setup multiplayer joining / friend codes and invites
-// TODO(feat): Setup multiplayer game sync, use tokio-tungstenite websockets
-// TODO(feat): Setup versioning for data and game and protocols
-// TODO(feat): Setup AI systems for characters (pathing, fighting)
-// TODO(feat): Setup auto releases with https://docs.cocogitto.io/ci_cd/action.html
-// TODO(perf): Use https://github.com/lumol-org/soa-derive and rayon for faster arrays
-// TODO(feat): Use a free relay server for p2p https://www.metered.ca/tools/openrelay/ or https://localxpose.io/tunneling-service
+// TODO(feat): Use include_directories and directories to setup data #2
+// TODO(feat): Use protest for testing #3
+// TODO(feat): Setup ratatatui #1
+// TODO(feat): Setup crossterm and crokey key handling#1
+// TODO(feat): Setup log, pretty log, tracing #2
+// TODO(feat): Setup dialogues with tui-markdown #2
+// TODO(feat): Create descriptions from item stats #3
+// TODO(feat): Create descriptions from story points #3
+// TODO(feat): Support for mounts #3
+// TODO(feat): Support for pets (on body, roving) #3
+// TODO(feat): Support for parties (NPC ane multipkayer? #2
+// TODO(feat): Design a fighting system #2
+// TODO(feat): Design an action system #2
+// TODO(feat): Design a settings menu #3
+// TODO(feat): Design a main menu #3
+// TODO(feat): Design a pause menu? #3
+// TODO(feat): Setup player keybinds via toml #2
+// TODO(feat): Setup redb for save games with multiple save slots #2
+// TODO(feat): Setup multiplayer joining / friend codes and invites#5
+// TODO(feat): Setup multiplayer game sync, use  ggrs or tokio-tungstenite websockets #1
+// TODO(feat): Setup versioning for data and game and protocols #2
+// TODO(feat): Setup AI systems for characters (pathing, fighting) #3
+// TODO(feat): Setup auto releases with https://docs.cocogitto.io/ci_cd/action.html #1
+// TODO(perf): Use https://github.com/lumol-org/soa-derive and rayon for faster arrays #4
+// TODO(feat): Use a free relay server for p2p https://www.metered.ca/tools/openrelay/ or https://localxpose.io/tunneling-service #4
+// TODO(feat): Use Steam for multiplayer networkinng https://docs.rs/steamworks/latest/steamworks/ #4
