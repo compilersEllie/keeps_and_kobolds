@@ -33,5 +33,5 @@ futures = "0.3.30"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 libp2p-identity = { version = "0.3.0", features = ["ed25519", "peerid", "rand"] }
 
-[dev-dependencies]
-cargo-workspaces = "0.4.2"
+# [dev-tools]
+# cargo-workspaces = "0.4.2"
