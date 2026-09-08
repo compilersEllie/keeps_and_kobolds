@@ -1,3 +1,4 @@
+use crate::asset;
 use crate::character::Character;
 use crate::character::Rarity;
 use crate::character::{Ancestry, Background, Class, Stats};
@@ -12,10 +13,12 @@ use std::time::Duration;
 pub struct Movement {
     name: String,
     velocity: Vec2D,
-    // TODO: Acceleration?
-    // TODO: Rotation?
-    // TODO: Animation?
+    // TODO: Acceleration? #4
+    // TODO: Rotation? #4
+    // TODO: Animation? #3
 }
+
+asset!(Movement);
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Condition {
@@ -45,7 +48,7 @@ pub enum Condition {
 
 impl Condition {
     pub fn met(&self, stats: &Stats, slot: Option<&Slot>) -> bool {
-        todo!("Condition.met")
+        todo!("Condition.met") // #2
     }
 }
 
@@ -75,7 +78,7 @@ pub enum CurrentEffect {
 
 impl CurrentEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
-        todo!("CurrentEffect.apply")
+        todo!("CurrentEffect.apply") // #2
     }
 }
 
@@ -94,7 +97,7 @@ pub enum TimedEffect {
 
 impl TimedEffect {
     fn apply(&self, stats: &mut Stats, slot: Option<&Slot>) {
-        todo!("TimedEffect.apply")
+        todo!("TimedEffect.apply") // #2
     }
 }
 
@@ -151,6 +154,8 @@ pub struct Relationship {
     rarity: Rarity,
 }
 
+asset!(Relationship);
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum StoryPointInfo {
     Location(Id<Location>),
@@ -168,3 +173,5 @@ pub struct StoryPoint {
     pub location: Option<Id<Location>>,
     pub effect: Effect,
 }
+
+asset!(StoryPoint);

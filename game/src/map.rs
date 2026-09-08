@@ -1,3 +1,4 @@
+use crate::asset;
 use crate::character::Character;
 use crate::item::Item;
 use crate::typed_id::Id;
@@ -52,7 +53,9 @@ pub struct Location {
     pub description: String,
 }
 
-// TODO: Implement map
+asset!(Location);
+
+// TODO: Implement map #1
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Map {
     pub width: u32,
@@ -68,9 +71,11 @@ pub struct Map {
     pub character: Vec<(Pos, Id<Character>)>,
 }
 
-// TODO(feat): Map generation via continuous noise functiond
+asset!(Map);
+
+// TODO(feat): Map generation via continuous noise functiond #3
 // e.g. https://docs.isaratech.com/ue4-plugins/noise-library/generators/ridged-multi
 //      Height map - Octave count = 12
 //      Maybe Water ways - Spectral weights exponent = 2
-// TODO(feat): Use erosion modeling https://stackoverflow.com/questions/36796829/procedural-terrain-with-ridged-fractal-noise
+// TODO(feat): Use erosion modeling https://stackoverflow.com/questions/36796829/procedural-terrain-with-ridged-fractal-noise #5
 // More inspiration https://www.world-machine.com/features.php#feature-simulation
