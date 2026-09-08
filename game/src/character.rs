@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::ops::{Add, AddAssign};
 
 use crate::actions::{Action, Discussion};
+use crate::asset;
 use crate::effects::{Condition, Effect, StoryPoint};
 use crate::item::{Item, Slot};
 use crate::map::Location;
@@ -26,8 +27,8 @@ pub enum Rarity {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Ancestry {
-    // TODO: Add more ancestries.
-    // TODO: Register from files.
+    // TODO: Add more ancestries. #4
+    // TODO: Register from files. #2
     name: String,
     stats: Stats,
     #[serde(skip_serializing_if = "is_default")]
@@ -36,25 +37,31 @@ pub struct Ancestry {
     nonplayable: bool,
 }
 
+asset!(Ancestry);
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Background {
-    // TODO: Add more backgrounds.
-    // TODO: Register from files.
+    // TODO: Add more backgrounds. #3
+    // TODO: Register from files. #2
     name: String,
     stats: Stats,
     rarity: Rarity,
 }
 
+asset!(Background);
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Class {
-    // TODO: Add more classes.
-    // TODO: Register from files.
+    // TODO: Add more classes. #2
+    // TODO: Register from files. #2
     name: String,
     stats: Stats,
     #[serde(default)]
     #[serde(skip_serializing_if = "is_default")]
     rarity: Rarity,
 }
+
+asset!(Class);
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Target {
@@ -80,6 +87,8 @@ pub struct Goal {
     #[serde(skip_serializing_if = "Option::is_none")]
     condition: Option<Condition>,
 }
+
+asset!(Goal);
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[serde(default)]
@@ -214,7 +223,7 @@ impl Stats {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Character {
-    // TODO: Implement character
+    // TODO: Implement character #2
     name: String, // Primary
     ancestry: Ancestry,
     background: Background,
@@ -229,6 +238,8 @@ pub struct Character {
     #[serde(skip)]
     stats: Option<Stats>,
 }
+
+asset!(Character);
 
 impl Character {
     fn compute(&mut self) -> Stats {
@@ -253,9 +264,9 @@ impl Character {
         stats
     }
 
-    // TODO: Calculate get situational actions
-    // TODO: Movement modes
-    // TODO: Stat tests
-    // TODO: Character creator
-    // TODO: Vision stat
+    // TODO: Calculate get situational actions #2
+    // TODO: Movement modes #2
+    // TODO: Stat tests #3
+    // TODO: Character creator #3
+    // TODO: Vision stat #2
 }

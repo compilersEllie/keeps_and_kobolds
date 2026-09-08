@@ -25,11 +25,11 @@ pub enum InputSignal {
 pub struct App<B: Backend> {
     pub preferences: Preferences,
     pub terminal: Terminal<B>,
-    // TODO(feat): Add chat commands
-    // TODO(feat): Add rx/tx channels for multiplayer
-    // TODO(feat): Add rx/tx channels for multiplayer chat
+    // TODO(feat): Add chat commands #3
+    // TODO(feat): Add rx/tx channels for multiplayer #2
+    // TODO(feat): Add rx/tx channels for multiplayer chat #2
     // e.g. pub registry: CommandRegistry,
-    // TODO(feat): Add times so messages can time out.
+    // TODO(feat): Add times so messages can time out. #5
     pub chat_history: Arc<Mutex<Vec<String>>>,
 }
 
@@ -71,8 +71,8 @@ where
     }
 
     pub async fn handle_input(&mut self) -> Result<InputSignal> {
-        // TODO(feat): Accumulate input events via channels.
-        // TODO(feat): Process events on this thread.
+        // TODO(feat): Accumulate input events via channels. #2
+        // TODO(feat): Process events on this thread. #2
 
         if !event::poll(std::time::Duration::from_millis(10))? {
             return Ok(InputSignal::Continue);
@@ -111,10 +111,10 @@ where
                 }
             }
             crate::world::wmain()?;
-            // TODO(feat): Handle simulation on another thread
-            // TODO(feat): Handle messages on another thread
-            // TODO(feat): Handle rendering on another thread
-            // TODO(feat): Render screen on this thread
+            // TODO(feat): Handle simulation on another thread #3
+            // TODO(feat): Handle messages on another thread #3
+            // TODO(feat): Handle rendering on another thread #3
+            // TODO(feat): Render screen on this thread #3
         }
         Ok(())
     }
