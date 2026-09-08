@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::ops::{Add, AddAssign};
 
 use crate::actions::{Action, Discussion};
+use crate::asset;
 use crate::effects::{Condition, Effect, StoryPoint};
 use crate::item::{Item, Slot};
 use crate::map::Location;
@@ -36,6 +37,8 @@ pub struct Ancestry {
     nonplayable: bool,
 }
 
+asset!(Ancestry);
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Background {
     // TODO: Add more backgrounds. #3
@@ -44,6 +47,8 @@ pub struct Background {
     stats: Stats,
     rarity: Rarity,
 }
+
+asset!(Background);
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Class {
@@ -55,6 +60,8 @@ pub struct Class {
     #[serde(skip_serializing_if = "is_default")]
     rarity: Rarity,
 }
+
+asset!(Class);
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Target {
@@ -80,6 +87,8 @@ pub struct Goal {
     #[serde(skip_serializing_if = "Option::is_none")]
     condition: Option<Condition>,
 }
+
+asset!(Goal);
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 #[serde(default)]
@@ -229,6 +238,8 @@ pub struct Character {
     #[serde(skip)]
     stats: Option<Stats>,
 }
+
+asset!(Character);
 
 impl Character {
     fn compute(&mut self) -> Stats {

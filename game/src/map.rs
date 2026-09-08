@@ -1,3 +1,4 @@
+use crate::asset;
 use crate::character::Character;
 use crate::item::Item;
 use crate::typed_id::Id;
@@ -52,6 +53,8 @@ pub struct Location {
     pub description: String,
 }
 
+asset!(Location);
+
 // TODO: Implement map #1
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Map {
@@ -67,6 +70,8 @@ pub struct Map {
     pub items: Vec<(Pos, Id<Item>)>,
     pub character: Vec<(Pos, Id<Character>)>,
 }
+
+asset!(Map);
 
 // TODO(feat): Map generation via continuous noise functiond #3
 // e.g. https://docs.isaratech.com/ue4-plugins/noise-library/generators/ridged-multi

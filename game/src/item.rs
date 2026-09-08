@@ -1,14 +1,24 @@
 use serde::{Deserialize, Serialize};
 
 use crate::actions::Action;
+use crate::asset;
 use crate::effects::StoryPoint;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum ItemKind {
-    Passive,             // Jewelry, Clothes, Armour, Coins, etc.
-    Tool(Vec<Action>),   // Actions
-    Weapon(Vec<Action>), // Actions
+pub enum ItemFunction {
+    Passive, // Jewelry, Clothes, Armour, Coins, etc.
+    Tool,    // Actions
+    Weapon,  // Actions
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct ItemKind {
+    name: String,
+    function: ItemFunction,
+    actions: Vec<Action>,
+}
+
+asset!(ItemKind);
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Handedness {
@@ -85,3 +95,5 @@ pub struct Item {
     // Creates effects on the user etc.
     pub history: Vec<StoryPoint>,
 }
+
+asset!(Item);

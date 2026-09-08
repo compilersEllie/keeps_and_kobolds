@@ -1,3 +1,4 @@
+use crate::asset;
 use crate::character::Character;
 use crate::character::Rarity;
 use crate::character::{Ancestry, Background, Class, Stats};
@@ -16,6 +17,8 @@ pub struct Movement {
     // TODO: Rotation? #4
     // TODO: Animation? #3
 }
+
+asset!(Movement);
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Condition {
@@ -151,6 +154,8 @@ pub struct Relationship {
     rarity: Rarity,
 }
 
+asset!(Relationship);
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum StoryPointInfo {
     Location(Id<Location>),
@@ -168,3 +173,5 @@ pub struct StoryPoint {
     pub location: Option<Id<Location>>,
     pub effect: Effect,
 }
+
+asset!(StoryPoint);

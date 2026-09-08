@@ -3,6 +3,7 @@ use crossterm::event::{KeyModifiers, MouseEventKind};
 use derive_more::with_trait::{AsMut, AsRef, Deref, From};
 use serde::{Deserialize, Serialize};
 
+use crate::asset;
 use crate::effects::{Condition, Effect};
 use crate::item::Item;
 use crate::typed_id::Id;
@@ -110,6 +111,7 @@ pub struct Action {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub default_mouse: Vec<MouseCombination>,
 }
+asset!(Action);
 
 type Label = String;
 
@@ -121,3 +123,5 @@ pub struct Discussion {
     pub current: Option<usize>,
     pub lines: Vec<Action>,
 }
+
+asset!(Discussion);

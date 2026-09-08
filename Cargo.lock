@@ -1821,24 +1821,20 @@ dependencies = [
 ]
 
 [[package]]
-name = "include_directory"
-version = "0.1.1"
+name = "include_dir"
+version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc51bf21d9c8c76d0d55b3926add7fde9b595719ee0d5710d46f8ee66131cca9"
+checksum = "923d117408f1e49d914f1a379a309cffe4f18c05cf4e3d12e613a15fc81bd0dd"
 dependencies = [
- "glob",
- "include_directory_macros",
- "mime",
+ "include_dir_macros",
 ]
 
 [[package]]
-name = "include_directory_macros"
-version = "0.1.0"
+name = "include_dir_macros"
+version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "35011b5de7391d94ea631aa584d09a88b2e877505a614e4952970214f2fd1b90"
+checksum = "7cab85a7ed0bd5f0e76d93846e0147172bed2e2d3f859bcc33a8d9699cad1a75"
 dependencies = [
- "mime",
- "new_mime_guess",
  "proc-macro2",
  "quote",
 ]
@@ -2021,13 +2017,14 @@ dependencies = [
  "directories",
  "env_logger",
  "futures",
- "include_directory",
+ "include_dir",
  "inventory",
  "itertools 0.15.0",
  "libp2p",
  "libp2p-identity 0.3.0",
  "log",
  "noise",
+ "polymap",
  "pretty_assertions",
  "protest",
  "ratatui",
@@ -2640,12 +2637,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mime"
-version = "0.3.17"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
-
-[[package]]
 name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2775,16 +2766,6 @@ dependencies = [
  "libc",
  "log",
  "tokio",
-]
-
-[[package]]
-name = "new_mime_guess"
-version = "4.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "02a2dfb3559d53e90b709376af1c379462f7fb3085a0177deb73e6ea0d99eff4"
-dependencies = [
- "mime",
- "unicase",
 ]
 
 [[package]]
@@ -3242,6 +3223,12 @@ dependencies = [
  "opaque-debug",
  "universal-hash",
 ]
+
+[[package]]
+name = "polymap"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "515930effd824efac6f4eea20c5457b8a6985c6202ec7fbd63408bad3e793d5f"
 
 [[package]]
 name = "polyval"

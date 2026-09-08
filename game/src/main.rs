@@ -6,6 +6,7 @@ use ratatui::{Terminal, backend::CrosstermBackend};
 
 mod actions;
 mod app;
+mod assets;
 mod character;
 mod effects;
 mod goal;
@@ -20,6 +21,7 @@ mod world;
 mod typed_id;
 
 use crate::app::App;
+use crate::assets::AssetType;
 
 pub const QUALIFIER: &str = "systems";
 pub const ORGANIZATION: &str = "mimir";
@@ -89,6 +91,16 @@ pub fn dirs() -> ProjectDirs {
 async fn main() -> Result<()> {
     ensure_initialized();
 
+    use polymap::PolyMap;
+    let mut store = PolyMap::new();
+
+    for asset_type in inventory::iter::<AssetType> {
+        asset_type.load_all(&mut store);
+    }
+
+    for asset_type in inventory::iter::<AssetType> {
+        println!("{}: {}", asset_type.kind, (asset_type.display)(&store));
+    }
     let terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
     let mut app = App::new(terminal)?;
 
