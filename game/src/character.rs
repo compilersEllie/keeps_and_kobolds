@@ -30,10 +30,12 @@ pub struct Ancestry {
     // TODO: Add more ancestries. #4
     name: String,
     stats: Stats,
+    #[serde(default)]
     #[serde(skip_serializing_if = "is_default")]
     rarity: Rarity,
+    #[serde(default)]
     #[serde(skip_serializing_if = "is_default")]
-    nonplayable: bool,
+    nonplayer: bool,
 }
 
 asset!(Ancestry);

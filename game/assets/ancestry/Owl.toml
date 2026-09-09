@@ -1,2 +1,5 @@
 name = "Owl"
 nonplayer = true
+rarity = "Uncommon"
+
+[stats]

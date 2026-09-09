@@ -55,7 +55,7 @@ fn display<T: std::fmt::Debug + Any + for<'a> Deserialize<'a>>(store: &PolyMap<T
     let Some(items) = store.get::<TypeId, Vec<T>>(&TypeId::of::<T>()) else {
         return "?".to_string();
     };
-    let out = items.iter().map(|item| format!("{:?}", item)).join(", ");
+    let out = items.iter().map(|item| format!("{:#?}", item)).join(", ");
     format!("[{}]", out)
 }
 

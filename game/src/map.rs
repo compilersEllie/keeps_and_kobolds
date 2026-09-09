@@ -55,12 +55,20 @@ pub struct Location {
 
 asset!(Location);
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct TileKind {
+    name: String,
+    textures: Vec<()>, // TODO(feat): Make textures
+}
+
+asset!(TileKind);
+
 // TODO: Implement map #1
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Map {
     pub width: u32,
     pub height: u32,
-    pub tiles: Vec<()>,
+    pub tiles: Vec<Id<TileKind>>,
 
     pub up: Option<Id<Location>>,
     pub down: Option<Id<Location>>,
@@ -68,7 +76,7 @@ pub struct Map {
     pub right: Option<Id<Location>>,
 
     pub items: Vec<(Pos, Id<Item>)>,
-    pub character: Vec<(Pos, Id<Character>)>,
+    pub characters: Vec<(Pos, Id<Character>)>,
 }
 
 asset!(Map);
