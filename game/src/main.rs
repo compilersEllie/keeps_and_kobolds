@@ -142,3 +142,6 @@ async fn main() -> Result<()> {
 // TODO(perf): Use https://github.com/lumol-org/soa-derive and rayon for faster arrays #4
 // TODO(feat): Use a free relay server for p2p https://www.metered.ca/tools/openrelay/ or https://localxpose.io/tunneling-service #4
 // TODO(feat): Use Steam for multiplayer networkinng https://docs.rs/steamworks/latest/steamworks/ #4
+// TODO(idea): Perkins20: Nat20 does full damage + roll (i.e. a crit)
+// TODO(idea): Glancing blow: If attack role == AC, damage is done with resistance (so there's not a miss hit binary)
+// TODO(idea): Spell slot exhaustion: Using spells after your slots are out uses up levels of exhaustion (max 6)
