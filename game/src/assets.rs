@@ -63,8 +63,7 @@ fn display<T: std::fmt::Debug + Any + for<'a> Deserialize<'a>>(store: &PolyMap<T
     let Some(items) = store.get::<TypeId, HashMap<Id<T>, T>>(&TypeId::of::<T>()) else {
         return "?".to_string();
     };
-    let out = items.values().map(|item| format!("{:#?}", item))
-        .join(", ");
+    let out = items.values().map(|item| format!("{:#?}", item)).join(", ");
     format!("[{}]", out)
 }
 

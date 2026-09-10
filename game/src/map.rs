@@ -96,7 +96,7 @@ impl Map {
 
                 // -1..1
                 let tile_n = n.get([x as f64, y as f64]);
-                let tile_h = ((self.tilekinds.len()-1) as f64) * (tile_n + 1.0) / 2.0;
+                let tile_h = ((self.tilekinds.len() - 1) as f64) * (tile_n + 1.0) / 2.0;
                 let tile_k = tile_h as usize;
                 let tilekind_id = &self.tilekinds[tile_k];
 
@@ -106,7 +106,7 @@ impl Map {
                     .get(tilekind_id)
                     .unwrap_or_else(|| panic!("TileKind {:?} isn't loaded", tilekind_id));
                 let tile_sn = n.get([x as f64, y as f64]);
-                let tile_sh = ((tilekind.tiles.len()-1) as f64) * (tile_n + 1.0) / 2.0;
+                let tile_sh = ((tilekind.tiles.len() - 1) as f64) * (tile_n + 1.0) / 2.0;
                 let tile_t = tile_sh as usize;
                 let tile = tilekind.tiles[tile_t];
                 self.tiles.push(tile);
