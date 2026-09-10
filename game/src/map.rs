@@ -62,7 +62,7 @@ asset!(Location);
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct TileKind {
     name: String,
-    tiles: Vec<(char, Color)>, // TODO(feat): Add textures images
+    tiles: Vec<(char, Color)>, // TODO(feat): Add texture images #3
 }
 
 asset!(TileKind);
