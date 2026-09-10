@@ -24,6 +24,8 @@ mod typed_id;
 
 use crate::app::App;
 use crate::assets::AssetType;
+use crate::map::Map;
+use crate::typed_id::Id;
 
 pub const QUALIFIER: &str = "systems";
 pub const ORGANIZATION: &str = "mimir";
@@ -109,6 +111,15 @@ async fn main() -> Result<()> {
         );
     }
     */
+
+    let mut map = asset_store
+        .get::<TypeId, HashMap<Id<Map>, Map>>(&TypeId::of::<Map>())
+        .unwrap_or_else(|| panic!("Map isn't loaded"))
+        .get(&Id::new("SkyHold".into()))
+        .unwrap_or_else(|| panic!("Map {:?} isn't loaded", "SkyHold"))
+        .clone();
+
+    map.generate(&asset_store);
 
     let terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
     let mut app = App::new(terminal)?;
