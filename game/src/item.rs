@@ -88,7 +88,7 @@ pub enum Slot {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Item {
-    pub name: Option<String>, // Named objects exist.
+    pub name: String,
     pub kind: ItemKind,
     pub slot: Slot,
 

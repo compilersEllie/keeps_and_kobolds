@@ -3,6 +3,8 @@
 use anyhow::Result;
 use directories::ProjectDirs;
 use ratatui::{Terminal, backend::CrosstermBackend};
+use std::any::TypeId;
+use std::collections::HashMap;
 
 mod actions;
 mod app;
@@ -92,15 +94,22 @@ async fn main() -> Result<()> {
     ensure_initialized();
 
     use polymap::PolyMap;
-    let mut store = PolyMap::new();
+    let mut asset_store = PolyMap::new();
 
     for asset_type in inventory::iter::<AssetType> {
-        asset_type.load_all(&mut store);
+        asset_type.load_all(&mut asset_store);
     }
 
+    /*
     for asset_type in inventory::iter::<AssetType> {
-        println!("{}: {}", asset_type.kind, (asset_type.display)(&store));
+        println!(
+            "{}: {}",
+            asset_type.kind,
+            (asset_type.display)(&asset_store)
+        );
     }
+    */
+
     let terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
     let mut app = App::new(terminal)?;
 

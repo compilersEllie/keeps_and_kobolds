@@ -79,6 +79,7 @@ pub enum Target {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Goal {
+    name: String,
     #[serde(default)]
     #[serde(skip_serializing_if = "is_default")]
     target: Target,

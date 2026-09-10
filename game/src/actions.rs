@@ -119,6 +119,7 @@ type Label = String;
 pub struct Discussion {
     // TODO(feat): Implement discussion #3
     // TODO(feat): Implement internationalisation #5
+    pub name: String,
     pub starts: Vec<Label>,
     pub current: Option<usize>,
     pub lines: Vec<Action>,

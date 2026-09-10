@@ -167,6 +167,7 @@ pub enum StoryPointInfo {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct StoryPoint {
+    pub name: String,
     pub what: StoryPointInfo,
     pub ordering: Duration, // gametime (must be sync'd for multi-play)
     pub actor: Option<Id<Character>>,

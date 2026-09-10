@@ -2,7 +2,11 @@ use crate::asset;
 use crate::character::Character;
 use crate::item::Item;
 use crate::typed_id::Id;
+use noise::{HybridMulti, NoiseFn, Perlin};
+use polymap::PolyMap;
 use serde::{Deserialize, Serialize};
+use std::any::TypeId;
+use std::collections::HashMap;
 use std::ops::Add;
 
 #[derive(Debug, Copy, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -66,6 +70,7 @@ asset!(TileKind);
 // TODO: Implement map #1
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Map {
+    pub name: String,
     pub width: u32,
     pub height: u32,
     pub tiles: Vec<Id<TileKind>>,
