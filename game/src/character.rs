@@ -28,13 +28,14 @@ pub enum Rarity {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Ancestry {
     // TODO: Add more ancestries. #4
-    // TODO: Register from files. #2
     name: String,
     stats: Stats,
+    #[serde(default)]
     #[serde(skip_serializing_if = "is_default")]
     rarity: Rarity,
+    #[serde(default)]
     #[serde(skip_serializing_if = "is_default")]
-    nonplayable: bool,
+    nonplayer: bool,
 }
 
 asset!(Ancestry);
@@ -42,7 +43,6 @@ asset!(Ancestry);
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Background {
     // TODO: Add more backgrounds. #3
-    // TODO: Register from files. #2
     name: String,
     stats: Stats,
     rarity: Rarity,
@@ -53,7 +53,6 @@ asset!(Background);
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Class {
     // TODO: Add more classes. #2
-    // TODO: Register from files. #2
     name: String,
     stats: Stats,
     #[serde(default)]
@@ -80,6 +79,7 @@ pub enum Target {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Goal {
+    name: String,
     #[serde(default)]
     #[serde(skip_serializing_if = "is_default")]
     target: Target,

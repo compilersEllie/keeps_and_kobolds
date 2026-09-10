@@ -1,0 +1,13 @@
+name = "SkyHold"
+width = 800
+height = 600
+tilekinds = [
+  "Grass",
+  "Rock",
+  "Ice",
+  "Snow",
+]
+items = [
+]
+characters = [
+]

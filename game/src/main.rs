@@ -3,6 +3,8 @@
 use anyhow::Result;
 use directories::ProjectDirs;
 use ratatui::{Terminal, backend::CrosstermBackend};
+use std::any::TypeId;
+use std::collections::HashMap;
 
 mod actions;
 mod app;
@@ -22,6 +24,8 @@ mod typed_id;
 
 use crate::app::App;
 use crate::assets::AssetType;
+use crate::map::Map;
+use crate::typed_id::Id;
 
 pub const QUALIFIER: &str = "systems";
 pub const ORGANIZATION: &str = "mimir";
@@ -92,15 +96,31 @@ async fn main() -> Result<()> {
     ensure_initialized();
 
     use polymap::PolyMap;
-    let mut store = PolyMap::new();
+    let mut asset_store = PolyMap::new();
 
     for asset_type in inventory::iter::<AssetType> {
-        asset_type.load_all(&mut store);
+        asset_type.load_all(&mut asset_store);
     }
 
+    /*
     for asset_type in inventory::iter::<AssetType> {
-        println!("{}: {}", asset_type.kind, (asset_type.display)(&store));
+        println!(
+            "{}: {}",
+            asset_type.kind,
+            (asset_type.display)(&asset_store)
+        );
     }
+    */
+
+    let mut map = asset_store
+        .get::<TypeId, HashMap<Id<Map>, Map>>(&TypeId::of::<Map>())
+        .unwrap_or_else(|| panic!("Map isn't loaded"))
+        .get(&Id::new("SkyHold".into()))
+        .unwrap_or_else(|| panic!("Map {:?} isn't loaded", "SkyHold"))
+        .clone();
+
+    map.generate(&asset_store);
+
     let terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
     let mut app = App::new(terminal)?;
 
@@ -142,3 +162,6 @@ async fn main() -> Result<()> {
 // TODO(perf): Use https://github.com/lumol-org/soa-derive and rayon for faster arrays #4
 // TODO(feat): Use a free relay server for p2p https://www.metered.ca/tools/openrelay/ or https://localxpose.io/tunneling-service #4
 // TODO(feat): Use Steam for multiplayer networkinng https://docs.rs/steamworks/latest/steamworks/ #4
+// TODO(idea): Perkins20: Nat20 does full damage + roll (i.e. a crit)
+// TODO(idea): Glancing blow: If attack role == AC, damage is done with resistance (so there's not a miss hit binary)
+// TODO(idea): Spell slot exhaustion: Using spells after your slots are out uses up levels of exhaustion (max 6)

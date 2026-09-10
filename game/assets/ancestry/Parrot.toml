@@ -1,2 +1,3 @@
 name = "Parrot"
 nonplayer = true
+[stats]

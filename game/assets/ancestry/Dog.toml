@@ -1,2 +1,5 @@
 name = "Dog"
 nonplayer = true
+rarity = "Common"
+
+[stats]

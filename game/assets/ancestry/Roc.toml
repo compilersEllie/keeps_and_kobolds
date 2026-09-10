@@ -1,2 +1,5 @@
 name = "Roc"
 nonplayer = true
+rarity = "Rare"
+
+[stats]
