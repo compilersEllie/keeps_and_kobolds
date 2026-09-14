@@ -5,6 +5,7 @@ use directories::ProjectDirs;
 use ratatui::{Terminal, backend::CrosstermBackend};
 use std::any::TypeId;
 use std::collections::HashMap;
+use tokio::sync::mpsc;
 
 mod actions;
 mod app;
@@ -25,6 +26,7 @@ mod typed_id;
 use crate::app::App;
 use crate::assets::AssetType;
 use crate::map::Map;
+use crate::net::NetUpdate;
 use crate::typed_id::Id;
 
 pub const QUALIFIER: &str = "systems";
@@ -32,6 +34,8 @@ pub const ORGANIZATION: &str = "mimir";
 pub const APPLICATION: &str = "knk";
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+
+pub const BUFFER_SIZE: usize = 16;
 
 static mut LOGS_UNINITIALISED: bool = true;
 
@@ -121,17 +125,25 @@ async fn main() -> Result<()> {
 
     map.generate(&asset_store);
 
+    // TODO: Handle errors on threads #2
+    let (to_network, mut from_app) = mpsc::channel::<NetUpdate>(BUFFER_SIZE);
+    let (to_app, mut from_network) = mpsc::channel::<NetUpdate>(BUFFER_SIZE);
+
     let terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
-    let mut app = App::new(terminal)?;
+    let mut app = App::new(
+        terminal,
+        to_network,
+        from_network,
+    )?;
 
-    // let gameNet = GameNet::new();
-    net::main().await?;
+    // TODO(cleanup): Use the same pattern for the renderer. #3
+    tokio::spawn(async move {
+        net::launch(to_app, from_app).await
+    });
 
-    /*
     app.enter().await?;
     app.run().await?;
     app.leave().await?;
-    */
 
     Ok(())
 }

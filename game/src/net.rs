@@ -9,6 +9,7 @@ use libp2p::{
     swarm::SwarmEvent,
     tcp, yamux,
 };
+use serde::{Deserialize, Serialize};
 use std::{
     collections::hash_map::DefaultHasher,
     error::Error,
@@ -16,7 +17,15 @@ use std::{
     time::Duration,
 };
 use tokio::{io, io::AsyncBufReadExt, select};
+use tokio::sync::mpsc;
 use tracing_subscriber::EnvFilter;
+
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub enum NetUpdate {
+    TerminatedSuccess,
+    TerminatedError(String),
+}
 
 #[derive(NetworkBehaviour)]
 struct GameNet {
@@ -26,7 +35,25 @@ struct GameNet {
     kad: kad::Behaviour<MemoryStore>, // Store info on the network
 }
 
-pub async fn main() -> Result<()> {
+struct NetState {
+    to_app: mpsc::Sender<NetUpdate>,
+    from_app: mpsc::Receiver<NetUpdate>,
+}
+
+pub async fn launch(to_app: mpsc::Sender<NetUpdate>, from_app: mpsc::Receiver<NetUpdate>) {
+    let mut state = NetState {
+        to_app,
+        from_app,
+    };
+
+    let res = main(&mut state).await;
+    match res {
+        Ok(()) => state.to_app.send(NetUpdate::TerminatedSuccess),
+        Err(e) => state.to_app.send(NetUpdate::TerminatedError(format!("{}", e))),
+    }; // TODO(correctness): Log errors here? #5
+}
+
+async fn main(state: &mut NetState) -> Result<()> {
     let _ = tracing_subscriber::fmt()
         .with_env_filter(EnvFilter::from_default_env())
         .try_init();

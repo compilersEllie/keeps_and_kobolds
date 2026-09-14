@@ -9,10 +9,12 @@ use ratatui::{Terminal, backend::Backend};
 use signal_hook::consts::signal::SIGTSTP;
 
 use std::io::Write;
-use std::sync::{Arc, Mutex, mpsc};
+use std::sync::{Arc, Mutex};
 
 use tokio_stream::StreamExt;
+use tokio::sync::mpsc;
 
+use crate::net::NetUpdate;
 use crate::preferences::Preferences;
 
 #[derive(Debug)]
@@ -27,6 +29,8 @@ pub struct App<B: Backend> {
     pub terminal: Terminal<B>,
     // TODO(feat): Add chat commands #3
     // TODO(feat): Add rx/tx channels for multiplayer #2
+    to_network: mpsc::Sender<NetUpdate>,
+    from_network: mpsc::Receiver<NetUpdate>,
     // TODO(feat): Add rx/tx channels for multiplayer chat #2
     // e.g. pub registry: CommandRegistry,
     // TODO(feat): Add times so messages can time out. #5
@@ -37,12 +41,18 @@ impl<B: Backend + Write> App<B>
 where
     <B as Backend>::Error: 'static + Sync + Send,
 {
-    pub fn new(terminal: Terminal<B>) -> Result<Self> {
+    pub fn new(
+        terminal: Terminal<B>,
+        to_network: mpsc::Sender<NetUpdate>,
+        from_network: mpsc::Receiver<NetUpdate>,
+    ) -> Result<Self> {
         let preferences = Preferences::load()?;
         let chat_history = Arc::new(Mutex::new(vec![]));
         let app = App {
             preferences,
             terminal,
+            to_network,
+            from_network,
             chat_history,
         };
         Ok(app)
@@ -99,23 +109,13 @@ where
     }
 
     pub async fn run(&mut self) -> Result<()> {
-        loop {
-            match self.handle_input().await? {
-                InputSignal::Continue => {}
-                InputSignal::Break => break,
-                InputSignal::Suspend => {
-                    self.leave().await?;
-                    signal_hook::low_level::emulate_default_handler(SIGTSTP)
-                        .with_context(|| "Failed to emulate signal handler")?;
-                    self.enter().await?;
-                }
-            }
+        //loop {
             crate::world::wmain()?;
             // TODO(feat): Handle simulation on another thread #3
             // TODO(feat): Handle messages on another thread #3
             // TODO(feat): Handle rendering on another thread #3
             // TODO(feat): Render screen on this thread #3
-        }
+       // }
         Ok(())
     }
 }
