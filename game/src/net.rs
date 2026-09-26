@@ -5,7 +5,7 @@ use libp2p::swarm::NetworkBehaviour;
 use libp2p::{
     Multiaddr, gossipsub, identify, kad,
     kad::{Mode, store::MemoryStore},
-    mdns, noise, ping,
+    mdns, noise,
     swarm::SwarmEvent,
     tcp, yamux,
 };

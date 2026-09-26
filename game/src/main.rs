@@ -15,6 +15,7 @@ mod goal;
 mod item;
 mod map;
 mod menus;
+#[cfg(feature = "net")]
 mod net;
 mod preferences;
 mod render;
@@ -125,6 +126,7 @@ async fn main() -> Result<()> {
     let mut app = App::new(terminal)?;
 
     // let gameNet = GameNet::new();
+    #[cfg(feature = "net")]
     net::main().await?;
 
     /*

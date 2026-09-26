@@ -3,6 +3,8 @@ name = "keeps_and_kobolds"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+net=["libp2p"]
 [dependencies]
 anyhow = "1.0.104"
 better-std = { path = "../better-std", features = [ ] }
@@ -25,9 +27,9 @@ simple-datetime-rs = { version = "0.3.0", features = ["serde"] }
 tokio = { version = "1.53.1", features = ["full"] }
 tokio-stream = "0.1.19"
 toml = "1.1.4"
-tui-markdown = "0.3.9"
+# tui-markdown = { version = "0.3.9", optional = true }
 
-libp2p = { version = "0.54", features = ["noise", "ping", "tcp", "tokio", "yamux", "kad", "identify", "macros", "mdns", "gossipsub"] }
+libp2p = { version = "0.54", features = ["noise", "ping", "tcp", "tokio", "yamux", "kad", "identify", "macros", "mdns", "gossipsub"], optional=true }
 futures = "0.3.30"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 libp2p-identity = { version = "0.3.0", features = ["ed25519", "peerid", "rand"] }
