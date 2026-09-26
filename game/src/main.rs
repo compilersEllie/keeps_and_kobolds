@@ -16,6 +16,7 @@ mod goal;
 mod item;
 mod map;
 mod menus;
+#[cfg(feature = "net")]
 mod net;
 mod preferences;
 mod render;
@@ -137,6 +138,7 @@ async fn main() -> Result<()> {
     )?;
 
     // TODO(cleanup): Use the same pattern for the renderer. #3
+    #[cfg(feature = "net")]
     tokio::spawn(async move {
         net::launch(to_app, from_app).await
     });
