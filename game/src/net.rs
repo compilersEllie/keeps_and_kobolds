@@ -16,10 +16,9 @@ use std::{
     hash::{Hash, Hasher},
     time::Duration,
 };
-use tokio::{io, io::AsyncBufReadExt, select};
 use tokio::sync::mpsc;
+use tokio::{io, io::AsyncBufReadExt, select};
 use tracing_subscriber::EnvFilter;
-
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum NetUpdate {
@@ -41,15 +40,14 @@ struct NetState {
 }
 
 pub async fn launch(to_app: mpsc::Sender<NetUpdate>, from_app: mpsc::Receiver<NetUpdate>) {
-    let mut state = NetState {
-        to_app,
-        from_app,
-    };
+    let mut state = NetState { to_app, from_app };
 
     let res = main(&mut state).await;
     match res {
         Ok(()) => state.to_app.send(NetUpdate::TerminatedSuccess),
-        Err(e) => state.to_app.send(NetUpdate::TerminatedError(format!("{}", e))),
+        Err(e) => state
+            .to_app
+            .send(NetUpdate::TerminatedError(format!("{}", e))),
     }; // TODO(correctness): Log errors here? #5
 }
 

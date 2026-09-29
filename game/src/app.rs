@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use crossterm::event::{
-    self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers, MouseEvent,
+    self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEvent, KeyEventKind,
+    KeyModifiers, MouseEvent,
 };
 use crossterm::execute;
 use crossterm::terminal::{
@@ -19,6 +20,7 @@ use tokio::sync::mpsc;
 use tokio_stream::StreamExt;
 
 use crate::BUFFER_SIZE;
+#[cfg(feature = "net")]
 use crate::net::NetUpdate;
 use crate::preferences::Preferences;
 
@@ -60,7 +62,9 @@ pub struct App<B: Backend> {
     pub event_reader_task: Option<JoinHandle<()>>,
 
     // Channels:
+    #[cfg(feature = "net")]
     to_network: mpsc::Sender<NetUpdate>,
+    #[cfg(feature = "net")]
     from_network: mpsc::Receiver<NetUpdate>,
 
     to_event_handler: mpsc::Sender<UIEvent>,
@@ -75,8 +79,8 @@ where
 {
     pub fn new(
         terminal: Terminal<B>,
-        to_network: mpsc::Sender<NetUpdate>,
-        from_network: mpsc::Receiver<NetUpdate>,
+        #[cfg(feature = "net")] to_network: mpsc::Sender<NetUpdate>,
+        #[cfg(feature = "net")] from_network: mpsc::Receiver<NetUpdate>,
     ) -> Result<Self> {
         let preferences = Preferences::load()?;
         let chat_history = Arc::new(Mutex::new(vec![]));
@@ -88,7 +92,9 @@ where
             frame_rate: 30.0,
             terminal,
             event_reader_task: None,
+            #[cfg(feature = "net")]
             to_network,
+            #[cfg(feature = "net")]
             from_network,
             to_event_handler: event_tx,
             from_event_reader: event_rx,
@@ -202,10 +208,10 @@ where
             let event = tui.next().await?; // blocks until next event (including render and tick
 
             if let Event::Render = event.clone() {
-              // application render
-              tui.draw(|f| {
-                ui(f, &app);
-              })?;
+                // application render
+                tui.draw(|f| {
+                    ui(f, &app);
+                })?;
             }
 
             // application update
@@ -213,7 +219,7 @@ where
 
             // application exit
             if app.should_quit {
-              break;
+                break;
             }
         }
         //loop {

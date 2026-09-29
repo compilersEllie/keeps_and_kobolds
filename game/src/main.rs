@@ -27,6 +27,7 @@ mod typed_id;
 use crate::app::App;
 use crate::assets::AssetType;
 use crate::map::Map;
+#[cfg(feature = "net")]
 use crate::net::NetUpdate;
 use crate::typed_id::Id;
 
@@ -127,21 +128,20 @@ async fn main() -> Result<()> {
     map.generate(&asset_store);
 
     // TODO: Handle errors on threads #2
+    #[cfg(feature = "net")]
     let (to_network, mut from_app) = mpsc::channel::<NetUpdate>(BUFFER_SIZE);
+    #[cfg(feature = "net")]
     let (to_app, mut from_network) = mpsc::channel::<NetUpdate>(BUFFER_SIZE);
 
     let terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
-    let mut app = App::new(
-        terminal,
-        to_network,
-        from_network,
-    )?;
+    #[cfg(not(feature = "net"))]
+    let mut app = App::new(terminal)?;
+    #[cfg(feature = "net")]
+    let mut app = App::new(terminal, to_network, from_network)?;
 
     // TODO(cleanup): Use the same pattern for the renderer. #3
     #[cfg(feature = "net")]
-    tokio::spawn(async move {
-        net::launch(to_app, from_app).await
-    });
+    tokio::spawn(async move { net::launch(to_app, from_app).await });
 
     app.enter().await?;
     app.run().await?;
